@@ -1,6 +1,5 @@
-<h1>Editing Experience</h1>
-
-<%= render 'form', experience: @experience %>
-
-<%= link_to 'Show', @experience %> |
-<%= link_to 'Back', experiences_path %>
+<%- model_class = Experience -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize %></h1>
+</div>
+<%= render :partial => 'form' %>
