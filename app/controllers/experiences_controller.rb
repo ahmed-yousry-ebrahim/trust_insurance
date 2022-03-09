@@ -1,5 +1,6 @@
 class ExperiencesController < ApplicationController
   before_action :set_experience, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, only: %i[ new create edit update ]
 
   # GET /experiences or /experiences.json
   def index
@@ -21,11 +22,14 @@ class ExperiencesController < ApplicationController
 
   # POST /experiences or /experiences.json
   def create
-    @experience = Experience.new(experience_params)
+    tags = experience_params[:tags]
+    @experience = Experience.new(experience_params.except(:tags))
+    @experience.tag_list.add(tags)
+    @experience.user = current_user
 
     respond_to do |format|
       if @experience.save
-        format.html { redirect_to experience_url(@experience), notice: "Experience was successfully created." }
+        format.html { redirect_to root_path, notice: "Experience was successfully created." }
         format.json { render :show, status: :created, location: @experience }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -65,6 +69,6 @@ class ExperiencesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def experience_params
-      params.require(:experience).permit(:title, :description, :insurance_provider)
+      params.require(:experience).permit(:title, :description, :insurance_provider, :tags, :anonymous)
     end
 end

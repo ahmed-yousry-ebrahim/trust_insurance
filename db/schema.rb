@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_09_160514) do
+ActiveRecord::Schema.define(version: 2022_03_09_213934) do
 
   create_table "experiences", force: :cascade do |t|
     t.string "title"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2022_03_09_160514) do
     t.string "insurance_provider"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "anonymous"
     t.index ["user_id"], name: "index_experiences_on_user_id"
   end
 
