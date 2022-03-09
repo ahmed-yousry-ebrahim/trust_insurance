@@ -41,6 +41,7 @@ gem 'jquery-rails'
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
+gem 'bootstrap-tagsinput-rails'
 gem 'acts-as-taggable-on'
 
 group :development, :test do
