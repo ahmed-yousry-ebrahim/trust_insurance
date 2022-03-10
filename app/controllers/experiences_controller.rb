@@ -1,10 +1,29 @@
 class ExperiencesController < ApplicationController
-  before_action :set_experience, only: %i[ show edit update destroy ]
+  before_action :set_experience, only: %i[ show edit update destroy mark_as_helpful mark_as_not_helpful]
   before_action :authenticate_user!, only: %i[ new create edit update ]
 
   # GET /experiences or /experiences.json
   def index
     @experiences = Experience.all
+  end
+
+  def search
+    @experiences = Experience.all.left_joins(:user).order("users.reputation_points DESC")
+    @experiences = @experiences.tagged_with(params[:tags]) if params[:tags].present?
+  end
+
+  def mark_as_helpful
+    @experience.user.reputation_points = @experience.user.reputation_points + 1
+    @experience.user.save
+
+    redirect_to @experience, notice: "Review submitted successfully, thank you!"
+  end
+
+  def mark_as_not_helpful
+    @experience.user.reputation_points = @experience.user.reputation_points - 1
+    @experience.user.save
+
+    redirect_to @experience, notice: "Review submitted successfully, thank you!"
   end
 
   # GET /experiences/1 or /experiences/1.json
@@ -22,7 +41,7 @@ class ExperiencesController < ApplicationController
 
   # POST /experiences or /experiences.json
   def create
-    tags = experience_params[:tags]
+    tags = experience_params[:tags].split(",")
     @experience = Experience.new(experience_params.except(:tags))
     @experience.tag_list.add(tags)
     @experience.user = current_user

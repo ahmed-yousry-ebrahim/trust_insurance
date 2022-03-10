@@ -1,27 +1,14 @@
-<%- model_class = Experience -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+<div style="text-align:right; ">
+  <%= link_to "Helpful", mark_as_helpful_experience_path(@experience), class: "btn btn-primary", method: :post %>
+  <%= link_to "Not Helpful",  mark_as_not_helpful_experience_path(@experience), class: "btn btn-danger", method: :post %>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
-  <dd><%= @experience.title %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @experience.description %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
-  <dd><%= @experience.user_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:verified) %>:</strong></dt>
-  <dd><%= @experience.verified %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:insurance_provider) %>:</strong></dt>
-  <dd><%= @experience.insurance_provider %></dd>
-</dl>
-
-<%= link_to t('.back', :default => t("helpers.links.back")),
-              experiences_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_experience_path(@experience), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              experience_path(@experience),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+<div class="d-flex w-100 justify-content-between" style="margin-bottom: 10px">
+  <h5 class="mb-1"><%= @experience.title %> <%= "<span class='badge badge-success'>Verified</span>".html_safe if @experience.verified %></h5>
+  <small class="font-italic"><%= @experience.anonymous ?  "anonymous - Reputation: #{@experience.user.reputation_points}": "#{@experience.user.email} - Reputation: #{@experience.user.reputation_points}" %></small>
+</div>
+<p class="mb-1"><%= @experience.description %></p>
+<p>Insurance Provider: <%= @experience.insurance_provider %></p>
+<p>
+  <%= @experience.tags.map { |tag|  "<span class='badge badge-pill badge-secondary' style='background-color:#28a745; margin-right: 2px;'>#{tag}</span>" }.join.html_safe %>
+</p>

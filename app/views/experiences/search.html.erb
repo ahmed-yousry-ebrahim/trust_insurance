@@ -6,12 +6,12 @@
 </div>
 
 <div class="list-group">
-  <h2>Highlights experiences</h2>
+  <h2>Experiences matching your search: "<%= params[:tags] %>"</h2>
   <% @experiences.each do |experience| %>
     <a href="<%= experience_path(experience) %>" class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between" style="margin-bottom: 10px">
         <h5 class="mb-1"><%= experience.title %> <%= "<span class='badge badge-success'>Verified</span>".html_safe if experience.verified %></h5>
-        <small class="font-italic"><%= experience.anonymous ?  "anonymous - Reputation: #{experience.user.reputation_points}" : "#{experience.user.email} (Reputation: #{experience.user.reputation_points})" %></small>
+        <small class="font-italic"><%= experience.anonymous ?  "anonymous - Reputation: #{experience.user.reputation_points}" : "#{experience.user.email} - Reputation: #{experience.user.reputation_points}" %></small>
       </div>
       <p class="mb-1"><%= experience.description.truncate(200) %></p>
       <p>
