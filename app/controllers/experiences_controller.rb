@@ -41,9 +41,7 @@ class ExperiencesController < ApplicationController
 
   # POST /experiences or /experiences.json
   def create
-    tags = experience_params[:tags].split(",")
-    @experience = Experience.new(experience_params.except(:tags))
-    @experience.tag_list.add(tags)
+    @experience = Experience.new(experience_params)
     @experience.user = current_user
 
     respond_to do |format|
@@ -88,6 +86,6 @@ class ExperiencesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def experience_params
-      params.require(:experience).permit(:title, :description, :insurance_provider, :tags, :anonymous)
+      params.require(:experience).permit(:title, :description, :insurance_provider, :tag_list, :anonymous)
     end
 end
